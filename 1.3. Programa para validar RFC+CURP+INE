@@ -1,0 +1,113 @@
+import javax.swing.*;
+import java.awt.*;
+import java.io.*;
+import java.nio.file.*;
+import java.util.regex.*;
+
+public class Programa_para_validar extends JFrame {
+
+    File archivoEntrada = null;
+    File archivoResultado = null;
+
+    public Programa_para_validar() {
+
+        setTitle("Programa validador");
+        setSize(400,180);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+        setLayout(new FlowLayout());
+
+        JButton seleccionar = new JButton("Seleccionar archivo");
+        JButton procesar = new JButton("Procesar");
+        JButton abrir = new JButton("Abrir carpeta");
+
+        add(seleccionar);
+        add(procesar);
+        add(abrir);
+
+        // botón seleccionar archivo
+        seleccionar.addActionListener(e -> {
+            JFileChooser ch = new JFileChooser();
+            if(ch.showOpenDialog(this)==JFileChooser.APPROVE_OPTION){
+                archivoEntrada = ch.getSelectedFile();
+                JOptionPane.showMessageDialog(this,"Seleccionaste: "+archivoEntrada.getName());
+            }
+        });
+
+        // boton para procesar
+        procesar.addActionListener(e -> {
+            if(archivoEntrada==null){
+                JOptionPane.showMessageDialog(this,"Selecciona primero un archivo");
+                return;
+            }
+
+            try{
+                procesarTexto();
+                JOptionPane.showMessageDialog(this,"Listo, revisa el archivo generado");
+            }catch(Exception ex){
+                JOptionPane.showMessageDialog(this,"Ocurrió un error");
+                ex.printStackTrace();
+            }
+        });
+
+        // botón abrir carpeta
+        abrir.addActionListener(e -> {
+            if(archivoResultado==null){
+                JOptionPane.showMessageDialog(this,"Aún no hay archivo generado");
+                return;
+            }
+            try{
+                Desktop.getDesktop().open(archivoResultado.getParentFile());
+            }catch(Exception ex){
+                JOptionPane.showMessageDialog(this,"No se pudo abrir la carpeta");
+            }
+        });
+    }
+
+    // metodo que procesa el .txt
+    private void procesarTexto() throws IOException {
+
+        String contenido = Files.readString(archivoEntrada.toPath());
+
+        // regex
+        String rfc = "\\b[A-ZÑ&]{3,4}\\d{6}[A-Z0-9]{3}\\b";
+        String curp = "\\b[A-Z][AEIOU][A-Z]{2}\\d{2}(0[1-9]|1[0-2])(0[1-9]|[12]\\d|3[01])[HM][A-Z]{5}[A-Z0-9]\\d\\b";
+        String ine = "\\b[A-Z]{6}\\d{6}[HM][A-Z]{5}\\d{2}\\b";
+
+        StringBuilder out = new StringBuilder();
+
+        out.append("RFC encontrados:\n");
+        buscarCoincidencias(contenido,rfc,out);
+
+        out.append("\nCURP encontrados:\n");
+        buscarCoincidencias(contenido,curp,out);
+
+        out.append("\nClaves de elector encontradas:\n");
+        buscarCoincidencias(contenido,ine,out);
+
+        archivoResultado = new File(archivoEntrada.getParent()+"\\resultado.txt");
+        Files.writeString(archivoResultado.toPath(),out.toString());
+    }
+
+    // metodo para buscar con regex en el texto
+    private void buscarCoincidencias(String texto,String regex,StringBuilder salida){
+
+        Pattern p = Pattern.compile(regex);
+        Matcher m = p.matcher(texto);
+
+        boolean hay = false;
+
+        while(m.find()){
+            salida.append("-> ").append(m.group()).append("\n");
+            hay = true;
+        }
+
+        if(!hay){
+            salida.append("No se encontró ninguno\n");
+        }
+    }
+
+    public static void main(String[] args) {
+        new Programa_para_validar().setVisible(true);
+    }
+}
