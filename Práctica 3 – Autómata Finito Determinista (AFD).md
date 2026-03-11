@@ -2,7 +2,7 @@
 ```
 Práctica 3 – Autómata Finito Determinista (AFD)
 
-
+```
 ## Introducción
 
 Un **Autómata Finito Determinista (AFD)** es un modelo que se utiliza en la teoría de la computación para analizar cadenas de símbolos y determinar si pertenecen o no a un lenguaje determinado.
@@ -24,7 +24,7 @@ Donde:
  q0 - Estado inicial 
  F - Conjunto de estados de aceptación 
 
-```
+
 ---
 
 ## Objetivo
