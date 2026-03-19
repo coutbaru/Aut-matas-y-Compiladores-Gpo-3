@@ -4,7 +4,7 @@
 %}
 
 %%
-^[a-zA-Z]{1}[a-zA-Z0-9_]+$		{printf("Reconocido como VARIABLE decimal \n");}
+^[a-zA-Z]{1}[a-zA-Z0-9_]+$		{printf("Reconocido como VARIABLE \n");}
 %%
 int main()
 {
