@@ -1,0 +1,75 @@
+%option noyywrap
+
+%{
+#include <stdio.h>
+#include <stdlib.h>
+
+FILE *yyin, *yyout;
+%}
+
+RESERVADAS   "int"|"float"|"double"|"char"|"if"|"else"|"while"|"for"|"return"|"void"|"class"|"public"|"private"|"protected"|"include"|"using"|"namespace"|"std"|"cout"|"cin"
+ID           [a-zA-Z_][a-zA-Z0-9_]*
+ENTERO       [0-9]+
+FLOTANTE     [0-9]+"."[0-9]+
+HEXA         0[xX][0-9a-fA-F]+
+BINARIO      0[bB][01]+
+OCTAL        0[0-7]+
+STRING       \"([^\\\"]|\\.)*\"
+CHAR         \'([^\\\']|\\.)\'
+OPERADOR     "=="|"!="|"<="|">="|"++"|"--"|"&&"|"||"|"+"|"-"|"*"|"/"|"="|"<"|">"
+SEPARADOR    ";"|","|"("|")"|"{"|"}"|"["|"]"
+COMENT1      "//".*
+COMENTB      "/*"([^*]|\*+[^*/])*\*+"/"
+ESPACIO      [ \t\n]+
+
+%%
+
+{RESERVADAS}   { fprintf(yyout, "PALABRA_RESERVADA: %s\n", yytext); }
+
+{HEXA}         { fprintf(yyout, "NUM_HEXADECIMAL: %s\n", yytext); }
+{BINARIO}      { fprintf(yyout, "NUM_BINARIO: %s\n", yytext); }
+{OCTAL}        { fprintf(yyout, "NUM_OCTAL: %s\n", yytext); }
+{FLOTANTE}     { fprintf(yyout, "NUM_FLOTANTE: %s\n", yytext); }
+{ENTERO}       { fprintf(yyout, "NUM_ENTERO: %s\n", yytext); }
+
+{STRING}       { fprintf(yyout, "CADENA: %s\n", yytext); }
+{CHAR}         { fprintf(yyout, "CARACTER: %s\n", yytext); }
+
+{OPERADOR}     { fprintf(yyout, "OPERADOR: %s\n", yytext); }
+
+{SEPARADOR}    { fprintf(yyout, "SEPARADOR: %s\n", yytext); }
+
+{COMENT1}      { fprintf(yyout, "COMENTARIO_LINEA: %s\n", yytext); }
+{COMENTB}      { fprintf(yyout, "COMENTARIO_BLOQUE: %s\n", yytext); }
+
+{ID}           { fprintf(yyout, "IDENTIFICADOR: %s\n", yytext); }
+
+{ESPACIO}      { /* Ignorar espacios */ }
+
+.              { fprintf(yyout, "TOKEN_DESCONOCIDO: %s\n", yytext); }
+
+%%
+int main() {
+
+    yyin = fopen("C:\\Users\\Baruchs Delgado\\OneDrive\\Desktop\\Entradas.txt", "r");
+    yyout = fopen("C:\\Users\\Baruchs Delgado\\OneDrive\\Desktop\\Salidas.txt", "w");
+
+
+    if (!yyin) {
+        printf("No se pudo abrir el archivo de entrada\n");
+        return 1;
+    }
+
+    if (!yyout) {
+        printf("No se pudo abrir el archivo de salida\n");
+        return 1;
+    }
+
+    yylex();
+
+    fclose(yyin);
+    fclose(yyout);
+
+    printf("Analisis lexico terminado :)");
+    return 0;
+}
