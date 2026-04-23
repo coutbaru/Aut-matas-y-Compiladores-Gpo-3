@@ -27,6 +27,6 @@ ID [a-zA-Z][a-zA-Z0-9]*
 {ID} {return ID;}
 [ \t\r] {}
 
-. {printf("error léxico: %s\n", yytext);}
+. {printf("error lÃ©xico: %s\n", yytext);}
 %%
 int yywrap(void){return 1;}
