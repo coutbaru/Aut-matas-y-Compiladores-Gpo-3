@@ -49,7 +49,7 @@ void yyerror(const char*s){
 }
 
 int main(){
-	printf("Ingrese una expresión mateatica:\n");
+	printf("Ingrese una expresiÃ³n mateatica:\n");
 	yyparse();
 	return 0;
 }
