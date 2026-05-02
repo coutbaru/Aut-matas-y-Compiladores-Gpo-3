@@ -12,7 +12,7 @@
     #include "parser2.tab.h"
 %}
 
-/* Activa el conteo autom·tico de lÌneas */
+/* Activa el conteo autom√°tico de l√≠neas */
 %option yylineno
 
 DIGITO [0-9]
@@ -56,7 +56,7 @@ ID     [a-zA-Z][a-zA-Z0-9]*
 [ \t\r\n]   {  }
 
 . {
-    printf("Error lÈxico en lÌnea %d: Car·cter no reconocido '%s'\n", yylineno, yytext);
+    printf("Error l√©xico en l√≠nea %d: Car√°cter no reconocido '%s'\n", yylineno, yytext);
 }
 
 %%
