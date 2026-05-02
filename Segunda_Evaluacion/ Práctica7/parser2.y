@@ -34,12 +34,12 @@ lista_instrucciones:
     ;
 
 instruccion:
-    expresion P_COMA          { printf("Línea %d: Expresión matemática correcta.\n", yylineno); }
-    | asignacion P_COMA       { printf("Línea %d: Asignación de variable correcta.\n", yylineno); }
-    | estructura_if           { printf("Línea %d: Estructura IF correcta.\n", yylineno); }
-    | estructura_while        { printf("Línea %d: Estructura WHILE correcta.\n", yylineno); }
-    | estructura_for          { printf("Línea %d: Estructura FOR correcta.\n", yylineno); }
-    | estructura_switch       { printf("Línea %d: Estructura SWITCH correcta.\n", yylineno); }
+    expresion P_COMA          { printf("LÃ­nea %d: ExpresiÃ³n matemÃ¡tica correcta.\n", yylineno); }
+    | asignacion P_COMA       { printf("LÃ­nea %d: AsignaciÃ³n de variable correcta.\n", yylineno); }
+    | estructura_if           { printf("LÃ­nea %d: Estructura IF correcta.\n", yylineno); }
+    | estructura_while        { printf("LÃ­nea %d: Estructura WHILE correcta.\n", yylineno); }
+    | estructura_for          { printf("LÃ­nea %d: Estructura FOR correcta.\n", yylineno); }
+    | estructura_switch       { printf("LÃ­nea %d: Estructura SWITCH correcta.\n", yylineno); }
     | error P_COMA            { yyerrok; }
     ;
 
@@ -108,7 +108,7 @@ factor:
 %%
 
 void yyerror(const char *s) {
-    fprintf(stderr, "Error sintáctico en línea %d, cerca de '%s': %s\n", yylineno, yytext, s);
+    fprintf(stderr, "Error sintÃ¡ctico en lÃ­nea %d, cerca de '%s': %s\n", yylineno, yytext, s);
 }
 
 int main(int argc, char **argv) {
@@ -126,6 +126,6 @@ int main(int argc, char **argv) {
     yyparse();
     
     fclose(yyin);
-    printf("--- Análisis finalizado ---\n");
+    printf("--- AnÃ¡lisis finalizado ---\n");
     return 0;
 }
